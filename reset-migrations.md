@@ -18,10 +18,10 @@ find . -path "*/migrations/*.pyc"  -delete
 2. Drop the current database, or delete the db.sqlite3 if it is your case.
 3. Create the initial migrations and generate the database schema:
 ```
-python manage.py makemigrations
+python3 manage.py makemigrations
 ```
 ```
-python manage.py migrate
+python3 manage.py migrate
 ```
 And you are good to go.
 
