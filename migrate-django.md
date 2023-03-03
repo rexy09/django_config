@@ -21,6 +21,16 @@ python3 manage.py shell
 >>> ContentType.objects.all().delete()
 >>> quit()
 ````
+One by one
+```
+from django.contrib.contenttypes.models import ContentType
+```
+```
+ContentType.objects.all().delete()
+```
+```
+quit()
+````
 
 Finally:
 ```
