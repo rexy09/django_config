@@ -25,7 +25,9 @@
 
    
     Enter file in which to save the key (``USER_PATH``/.ssh/``id_rsa``):
-
+    ```bash
+    ~/.ssh/id_rsa
+    ```
     
 4. Add generated keys to the ssh-agent
 
@@ -36,6 +38,7 @@
     ```bash
     ssh-add ~/.ssh/id_rsa
     ```
+    
     
 5. Add public key to authorized keys.
 
