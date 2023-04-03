@@ -431,8 +431,12 @@ Note: After configuring Nginx, the next step should be securing traffic to the s
 If you have a domain name, the easiest way to get an SSL certificate to secure your traffic is using Let’s Encrypt. Follow this guide to set up Let’s Encrypt with Nginx on Ubuntu 20.04. Follow the procedure using the Nginx server block we created in this guide.
 
 ## Conclusion
-In this guide, we’ve set up a Django project in its own virtual environment. We’ve configured Gunicorn to translate client requests so that Django can handle them. Afterwards, we set up Nginx to act as a reverse proxy to handle client connections and serve the correct project depending on the client request.
+In this guide, we’ve set up a Django project in its own virtual environment. We’ve configured Gunicorn to translate client requests so that Django can handle them. 
+
+Afterwards, we set up Nginx to act as a reverse proxy to handle client connections and serve the correct project depending on the client request.
+
 Django makes creating projects and applications simple by providing many of the common pieces, allowing you to focus on the unique elements. By leveraging the general tool chain described in this article, you can easily serve the applications you create from a single server.
+
 Restart NGINX:
 ```
 sudo service nginx restart
