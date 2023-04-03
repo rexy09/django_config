@@ -292,4 +292,148 @@ Now you can control your application using Supervisor. If you want to update the
 ```
 sudo supervisorctl restart vanelo
 ```
-Where urban-train will be the name of your application.
+Where vanelo will be the name of your application.
+
+## Configure Nginx to Proxy Pass to Gunicorn
+Now that Gunicorn is set up, we need to configure Nginx to pass traffic to the process.
+Start by creating and opening a new server block in Nginx’s sites-available directory:
+```
+sudo nano /etc/nginx/sites-available/myproject
+```
+Inside, open up a new server block. We will start by specifying that this block should listen on the normal port 80 and that it should respond to our server’s domain name or IP address:
+```
+server {
+    listen 80;
+    server_name server_domain_or_IP;
+}
+```
+Next, we will tell Nginx to ignore any problems with finding a favicon. We will also tell it where to find the static assets that we collected in our `~/myprojectdir/static` directory. All of these files have a standard URI prefix of “/static”, so we can create a location block to match those requests:
+
+```
+server {
+    listen 80;
+    server_name server_domain_or_IP;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/sammy/myprojectdir;
+    }
+}
+```
+Finally, we’ll create a location / {} block to match all other requests. Inside of this location, we’ll include the standard proxy_params file included with the Nginx installation and then we will pass the traffic directly to the Gunicorn socket:
+```
+server {
+    listen 80;
+    server_name server_domain_or_IP;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/sammy/myprojectdir;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+```
+Save and close the file when you are finished. Now, we can enable the file by linking it to the sites-enabled directory:
+
+### Create logs files
+```
+mkdir logs
+```
+```
+touch logs/nginx-access.log
+```
+```
+touch logs/nginx-error.log
+```
+
+#### Example
+```
+upstream app_server {
+    server unix:/run/gunicorn.sock fail_timeout=0;
+}
+
+server {
+
+    # add here the ip address of your server
+    # or a domain pointing to that ip (like example.com or www.example.com)
+    server_name vanelo-api.ellipsis-dev.com;
+
+    keepalive_timeout 5;
+    client_max_body_size 4G;
+
+    access_log /home/vanelo/api/logs/nginx-access.log;
+    error_log /home/vanelo/api/logs/nginx-error.log;
+
+    location /static/ {
+        alias /home/vanelo/api/vanelo/staticfiles/;
+    }
+
+    # checks for static file, if not found proxy to app
+    location / {
+        try_files $uri @proxy_to_app;
+    }
+
+    location @proxy_to_app {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_pass http://app_server;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/vanelo-api.ellipsis-dev.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/vanelo-api.ellipsis-dev.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+
+server {
+    if ($host = vanelo-api.ellipsis-dev.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name vanelo-api.ellipsis-dev.com;
+    return 404; # managed by Certbot
+
+
+}
+```
+```
+sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
+```
+Test your Nginx configuration for syntax errors by typing:
+```
+sudo nginx -t
+```
+If no errors are reported, go ahead and restart Nginx by typing:
+```
+sudo systemctl restart nginx
+```
+Finally, we need to open up our firewall to normal traffic on port 80. Since we no longer need access to the development server, we can remove the rule to open port 8000 as well:
+```
+sudo ufw delete allow 8000
+```
+```
+sudo ufw allow 'Nginx Full'
+```
+
+You should now be able to go to your server’s domain or IP address to view your application.
+
+Note: After configuring Nginx, the next step should be securing traffic to the server using SSL/TLS. This is important because without it, all information, including passwords are sent over the network in plain text.
+If you have a domain name, the easiest way to get an SSL certificate to secure your traffic is using Let’s Encrypt. Follow this guide to set up Let’s Encrypt with Nginx on Ubuntu 20.04. Follow the procedure using the Nginx server block we created in this guide.
+
+## Conclusion
+In this guide, we’ve set up a Django project in its own virtual environment. We’ve configured Gunicorn to translate client requests so that Django can handle them. Afterwards, we set up Nginx to act as a reverse proxy to handle client connections and serve the correct project depending on the client request.
+Django makes creating projects and applications simple by providing many of the common pieces, allowing you to focus on the unique elements. By leveraging the general tool chain described in this article, you can easily serve the applications you create from a single server.
+Restart NGINX:
+```
+sudo service nginx restart
+```
