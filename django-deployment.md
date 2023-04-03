@@ -401,7 +401,7 @@ server {
 
     listen 80;
     server_name vanelo-api.ellipsis-dev.com;
-    return 404; # managed by Certbot
+    return 301 https://$host$request_uri; # managed by Certbot
 
 
 }
