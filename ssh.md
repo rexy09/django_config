@@ -47,7 +47,14 @@
     ```bash
     cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
     ```
-
+6. Adding a new SSH key to your account
+```
+cat ~/.ssh/id_rsa.pub
+```
+8. Testing your SSH connection
+```
+ssh -T git@github.com
+```
 
 ## Add local computer SSH to local
 
