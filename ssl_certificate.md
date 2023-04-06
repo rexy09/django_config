@@ -21,3 +21,10 @@ sudo nginx -t
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
+
+For last resort refer this link to use Certbot certificates instead
+
+```
+https://realpython.com/django-nginx-gunicorn/
+```
+https://realpython.com/django-nginx-gunicorn/
