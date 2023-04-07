@@ -350,7 +350,7 @@ touch logs/nginx-access.log
 touch logs/nginx-error.log
 ```
 
-#### Example
+#### Example 1
 ```
 upstream app_server {
     server unix:/run/gunicorn.sock fail_timeout=0;
@@ -406,6 +406,69 @@ server {
 
 }
 ```
+#### Example 2
+```
+upstream app_server {
+    server unix:/run/gunicorn.sock fail_timeout=0;
+}
+
+server {
+    
+    # add here the ip address of your server
+    # or a domain pointing to that ip (like example.com or www.example.com)
+    server_name 139.162.249.20 api.risitibox.com;
+
+    keepalive_timeout 5;
+    client_max_body_size 4G;
+
+    access_log /root/receipt/env/logs/nginx-access.log;
+    error_log /root/receipt/env/logs/nginx-error.log;
+    
+
+    location /static/ {
+        alias /root/receipt/env/receipt/staticfiles/;
+    }
+
+    location /media/ {
+        alias /root/receipt/env/receipt/media/;
+    }
+
+
+    # checks for static file, if not found proxy to app
+
+    location / {
+        try_files $uri @proxy_to_app;
+    }
+
+    location @proxy_to_app {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_pass http://app_server;
+    }
+
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/api.risitibox.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/api.risitibox.com/privkey.pem; 
+
+ # managed by Certbot
+}
+
+
+server {
+    if ($host = api.risitibox.com) {
+        return 301 https://$host$request_uri;
+    } 
+
+
+    listen 80;
+    server_name api.risitibox.com;
+    return 301 https://$host$request_uri; 
+
+}
+
+```
+
 ```
 sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
 ```
