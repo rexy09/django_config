@@ -24,6 +24,9 @@ sudo useradd -g celery celery
 
 ## 2. Create the celery configuration file
 Now let's create the celery configuration file inside the `/etc/default/celeryd` directory,
+```
+nano /etc/default/celeryd
+```
 
 Note: Please replace the user with your ubuntu user, `CELERY_APP_NAME`, `CELERYD_CHDIR`, and `CELERY_BIN`.
 
