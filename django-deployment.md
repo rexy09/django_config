@@ -504,3 +504,9 @@ Restart NGINX:
 ```
 sudo service nginx restart
 ```
+
+## Nginx connet to .sock failed (13:Permission denied) - 502 bad gateway
+
+What I simply did was changing the name of the user on the first line in `/etc/nginx/nginx.conf` file.
+
+In my case the default user was `www-data` and I changed it to my `root` machine username.
