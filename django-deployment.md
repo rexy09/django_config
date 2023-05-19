@@ -57,7 +57,7 @@ We have tested that Gunicorn can interact with our Django application, but we sh
 
 The Gunicorn socket will be created at boot and will listen for connections. When a connection occurs, systemd will automatically start the Gunicorn process to handle the connection.
 
-Start by creating and opening a systemd socket file for Gunicorn with sudo privileges:
+### 1. Start by creating and opening a systemd socket file for Gunicorn with sudo privileges:
 ``` bash
 sudo nano /etc/systemd/system/gunicorn.socket
 ```
@@ -75,7 +75,7 @@ WantedBy=sockets.target
 ```
 Save and close the file when you are finished.
 
-Next, create and open a systemd service file for Gunicorn with sudo privileges in your text editor. The service filename should match the socket filename with the exception of the extension:
+### 2. Next, create and open a systemd service file for Gunicorn with sudo privileges in your text editor. The service filename should match the socket filename with the exception of the extension:
 ``` bash
 sudo nano /etc/systemd/system/gunicorn.service
 ```
