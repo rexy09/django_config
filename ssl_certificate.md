@@ -21,6 +21,10 @@ sudo nginx -t
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
+# SSL
+## 1. Install Certbot
+
+https://certbot.eff.org/
 
 For last resort refer this link to use Certbot certificates instead
 
