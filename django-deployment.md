@@ -492,7 +492,9 @@ You should now be able to go to your server’s domain or IP address to view you
 
 Note: After configuring Nginx, the next step should be securing traffic to the server using SSL/TLS. This is important because without it, all information, including passwords are sent over the network in plain text.
 If you have a domain name, the easiest way to get an SSL certificate to secure your traffic is using Let’s Encrypt. Follow this guide to set up Let’s Encrypt with Nginx on Ubuntu 20.04. Follow the procedure using the Nginx server block we created in this guide.
+
 ## Change Nginx user
+Change nginx user from www-data to root
 ```
 nano /etc/nginx/nginx.conf
 ```
