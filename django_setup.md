@@ -9,12 +9,17 @@ If you are using Django with Python 3, type:
 ```
 sudo apt update
 ```
+### Installing python3 Libraries
+
 ```
 sudo apt install python3-pip python3-dev libpq-dev
 ```
+### Installing Nginx
+
 ```
 sudo apt install nginx curl
 ```
+### Installing PostgreSQL
 ```
 sudo apt install postgresql postgresql-contrib
 ```
