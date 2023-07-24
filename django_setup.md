@@ -23,3 +23,22 @@ sudo apt install nginx curl
 ```
 sudo apt install postgresql postgresql-contrib
 ```
+## Creating a Python Virtual Environment
+
+Now that we have our database, we can begin getting the rest of our project requirements ready. We will be installing our Python requirements within a virtual environment for easier management.
+
+To do this, we first need access to the virtualenv command. We can install this with pip.
+
+If you are using Python 3, upgrade pip and install the package by typing:
+
+```
+sudo -H pip3 install --upgrade pip
+```
+```
+sudo -H pip3 install virtualenv
+```
+
+Within the project directory, create a Python virtual environment by typing:
+```
+virtualenv env
+```
