@@ -1,6 +1,6 @@
 # Django Deployment Steps
 
-## Gunicorn Configuretions (Option 1)
+## 1. Gunicorn Configuretions 
 First install Gunicorn inside the virtualenv:
 ``` bash
  pip3 install gunicorn
@@ -52,7 +52,7 @@ Create a directory named run, for the unix socket file:
 mkdir run
 ```
 
-## Creating systemd Socket and Service Files for Gunicorn (Option 2)
+## 2. Creating systemd Socket and Service Files for Gunicorn 
 We have tested that Gunicorn can interact with our Django application, but we should implement a more robust way of starting and stopping the application server. To accomplish this, we’ll make systemd service and socket files.
 
 The Gunicorn socket will be created at boot and will listen for connections. When a connection occurs, systemd will automatically start the Gunicorn process to handle the connection.
