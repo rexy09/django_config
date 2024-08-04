@@ -13,13 +13,17 @@
     ``` bash
     ssh-keygen -t rsa -b 4096 -C "email@example.com"
     ```
+    eg.
+    ``` bash
+    ssh-keygen -t rsa -b 4096 -C "fredmuju@gmail.com"
+    ```
     Where
 
     ``4096`` is the encryption size. This is fine by default, only change it if required.
 
     ``email@exmaple.com`` is your email address
 
-3. Choose file name for your ssh keys
+4. Choose file name for your ssh keys
 
     Running the first command will prompt you to enter file to save your ssh keys. The default file name is ``id_rsa``. If you plan on making many SSH keys, give your key a name for they specific purpose or project.
 
@@ -29,7 +33,7 @@
     root/.ssh/id_rsa
     ```
     
-4. Add generated keys to the ssh-agent
+5. Add generated keys to the ssh-agent
 
     ```bash
     eval "$(ssh-agent -s)"
@@ -40,14 +44,14 @@
     ```
     
     
-5. Add public key to authorized keys.
+6. Add public key to authorized keys.
 
     Remember to change ``id_rsa`` to the appropriate file name if you had changed it.
 
     ```bash
     cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
     ```
-6. Adding a new SSH key to your account
+7. Adding a new SSH key to your account
 ```
 cat ~/.ssh/id_rsa.pub
 ```
